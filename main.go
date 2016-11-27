@@ -20,8 +20,10 @@ func main() {
 	}
 
 	db.AutoMigrate(&models.Cron{})
+	sc := models.NewScheduler()
+	sc.Cron.Start()
 
-	env := &handlers.Env{db}
+	env := &handlers.Env{db, sc}
 
 	e := echo.New()
 	e.Use(middleware.Logger())

@@ -5,5 +5,6 @@ import (
 )
 
 type Env struct {
-	Repo models.Repo
+	Repo  models.Repo
+	Sched models.Sched
 }

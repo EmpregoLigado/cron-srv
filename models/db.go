@@ -6,10 +6,10 @@ import (
 )
 
 type Repo interface {
-	Create(*Cron) *gorm.DB
-	FindById(*Cron, int) *gorm.DB
-	Update(*Cron) *gorm.DB
-	Delete(*Cron) *gorm.DB
+	CreateCron(*Cron) *gorm.DB
+	FindCronById(*Cron, int) *gorm.DB
+	UpdateCron(*Cron) *gorm.DB
+	DeleteCron(*Cron) *gorm.DB
 	Search(*Query, *[]Cron) *gorm.DB
 }
 

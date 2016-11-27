@@ -26,7 +26,11 @@ func (env *Env) CronCreate(c echo.Context) error {
 		return err
 	}
 
-	if err := env.Repo.Create(&cron).Error; err != nil {
+	if err := env.Repo.CreateCron(&cron).Error; err != nil {
+		return err
+	}
+
+	if err := env.Sched.Create(&cron); err != nil {
 		return err
 	}
 
@@ -36,7 +40,7 @@ func (env *Env) CronCreate(c echo.Context) error {
 func (env *Env) CronShow(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	cron := models.Cron{}
-	if err := env.Repo.FindById(&cron, id).Error; err != nil {
+	if err := env.Repo.FindCronById(&cron, id).Error; err != nil {
 		return err
 	}
 
@@ -46,7 +50,7 @@ func (env *Env) CronShow(c echo.Context) error {
 func (env *Env) CronUpdate(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	cron := models.Cron{}
-	if err := env.Repo.FindById(&cron, id).Error; err != nil {
+	if err := env.Repo.FindCronById(&cron, id).Error; err != nil {
 		return c.JSON(http.StatusNotFound, nil)
 	}
 
@@ -59,7 +63,7 @@ func (env *Env) CronUpdate(c echo.Context) error {
 	cron.Expression = cr.Expression
 	cron.Url = cr.Url
 
-	if err := env.Repo.Update(&cron).Error; err != nil {
+	if err := env.Repo.UpdateCron(&cron).Error; err != nil {
 		return err
 	}
 
@@ -69,11 +73,11 @@ func (env *Env) CronUpdate(c echo.Context) error {
 func (env *Env) CronDelete(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	cron := models.Cron{}
-	if err := env.Repo.FindById(&cron, id).Error; err != nil {
+	if err := env.Repo.FindCronById(&cron, id).Error; err != nil {
 		return c.JSON(http.StatusNotFound, nil)
 	}
 
-	if err := env.Repo.Delete(&cron).Error; err != nil {
+	if err := env.Repo.DeleteCron(&cron).Error; err != nil {
 		return err
 	}
 
