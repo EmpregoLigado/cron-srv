@@ -20,7 +20,7 @@ imports:
 - name: github.com/klauspost/crc32
   version: cb6bfca970f6908083f26f39a79009d608efd5cd
 - name: github.com/labstack/echo
-  version: e08070379af60f5b9c0fb5bb2d1527ba9624fe43
+  version: bc173df6ba59e1ee2378b3d68b7ff6d6b8abe742
   subpackages:
   - context
   - engine
