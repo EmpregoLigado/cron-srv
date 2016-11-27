@@ -2,6 +2,12 @@ machine:
   services:
     - docker
 
+dependencies:
+  pre:
+    - go get github.com/mattn/gom
+    - gom install
+    - gom build
+
 test:
   override:
     - go test -v -race ./handlers/...
