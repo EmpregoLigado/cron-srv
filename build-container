@@ -1,3 +1,2 @@
 GOOS=linux bash build
 docker build -t rafaeljesus/cron-srv .
-rm cron-srv
