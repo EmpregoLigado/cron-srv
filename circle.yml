@@ -23,7 +23,7 @@ deployment:
   master:
     branch: master
     commands:
-      - sh build
+      - cd "$APP_PATH" && sh build
       - docker build -t rafaeljesus/cron-srv .
       - docker login -e $DOCKERHUB_EMAIL -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
       - docker tag rafaeljesus/cron-srv rafaeljesus/cron-srv:master
