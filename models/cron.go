@@ -6,13 +6,13 @@ import (
 )
 
 type Cron struct {
-	Id         uint       `json:"id", sql:"primary_key"`
-	Url        string     `json:"url", sql:"not null"`
-	Expression string     `json:"expression", sql:"not null"`
-	Status     string     `json:"status", sql:"not null"`
-	CreatedAt  time.Time  `json:"created_at", sql:"not null"`
-	UpdatedAt  time.Time  `json:"updated_at", sql:"not null`
-	DeletedAt  *time.Time `json:"created_at", omitempty"`
+	Id         uint       `json:"id",sql:"primary_key"`
+	Url        string     `json:"url",sql:"not null"`
+	Expression string     `json:"expression",sql:"not null"`
+	Status     string     `json:"status",sql:"not null"`
+	CreatedAt  time.Time  `json:"created_at",sql:"not null"`
+	UpdatedAt  time.Time  `json:"updated_at",sql:"not null"`
+	DeletedAt  *time.Time `json:"created_at, omitempty"`
 }
 
 func (repo *DB) Create(u *Cron) *gorm.DB {

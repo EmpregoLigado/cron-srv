@@ -1,0 +1,16 @@
+package: github.com/rafaeljesus/cron-srv
+import:
+- package: github.com/jinzhu/gorm
+  version: v1.0
+  subpackages:
+  - dialects/postgres
+- package: github.com/labstack/echo
+  version: v2.2.0
+  subpackages:
+  - engine/fasthttp
+  - middleware
+testImport:
+- package: github.com/stretchr/testify
+  version: v1.1.4
+  subpackages:
+  - assert

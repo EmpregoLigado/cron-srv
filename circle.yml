@@ -4,13 +4,14 @@ machine:
 
 dependencies:
   pre:
-    - go get github.com/mattn/gom
-    - gom install
-    - gom build
+    - curl https://glide.sh/get | sh
+    - glide install
+    - go build -v
+    - go vet
 
 test:
   override:
-    - go test -v -race ./handlers/...
+    - go test -v -race $(glide novendor)
 
 deployment:
   master:
