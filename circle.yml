@@ -11,6 +11,7 @@ dependencies:
     - sudo apt-get update
     - sudo apt-get install glide -y
     - mkdir -p "$IMPORT_PATH"
+  override:
     - ln -sf "$(pwd)" "$APP_PATH"
     - cd "$APP_PATH" && glide install
 
