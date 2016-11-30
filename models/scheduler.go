@@ -11,13 +11,13 @@ type Sched interface {
 }
 
 type Scheduler struct {
-	Kv   map[int]interface{}
+	Kv   map[uint]interface{}
 	Cron *cron.Cron
 }
 
 func NewScheduler() *Scheduler {
 	return &Scheduler{
-		Kv:   make(map[int]interface{}),
+		Kv:   make(map[uint]interface{}),
 		Cron: cron.New(),
 	}
 }
@@ -39,6 +39,7 @@ func (s *Scheduler) Create(cron *Cron) error {
 	}
 
 	s.Cron.AddFunc(cron.Expression, runJob)
+	s.Kv[cron.Id] = s.Cron
 
 	return nil
 }
