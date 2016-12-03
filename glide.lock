@@ -1,10 +1,8 @@
-hash: 1c1b88aaee37be5d30db733f5137711dafb6fa04bf5454dfcf3397fbc1a31f08
-updated: 2016-11-27T15:18:02.769273812-02:00
+hash: 5d6374c08b8c4bd8c44c36a0471ec9580c99b45b578c1d1a02830744eadd74ef
+updated: 2016-12-03T19:35:13.24378693-02:00
 imports:
 - name: github.com/dgrijalva/jwt-go
   version: 9ed569b5d1ac936e6494082958d63a6aa4fff99a
-- name: github.com/facebookgo/httpcontrol
-  version: ccde4420e1fee9af5da365cb76075b95683f39a6
 - name: github.com/jinzhu/gorm
   version: 5174cc5c242a728b435ea2be8a2f7f998e15429b
   subpackages:
@@ -31,14 +29,14 @@ imports:
   - log
   - middleware
 - name: github.com/labstack/gommon
-  version: 9a43ff0d261e0e65594422e9eee08cf301aabbe7
+  version: 447fe7433567c785af957e549aadae2bf2000071
   subpackages:
   - bytes
   - color
   - log
   - random
 - name: github.com/lib/pq
-  version: d8eeeb8bae8896dd8e1b7e514ab0d396c4f12a1b
+  version: 4a82388ebc5138c8289fe9bc602cb0b3e32cd617
   subpackages:
   - hstore
   - oid
@@ -48,23 +46,21 @@ imports:
   version: 30a891c33c7cde7b02a981314b4228ec99380cca
 - name: github.com/robfig/cron
   version: b024fc5ea0e34bc3f83d9941c8d60b0622bfaca4
-- name: github.com/sethgrid/pester
-  version: 2a102734c18c43c74fd0664e06cd414cf9602b93
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasthttp
-  version: 1913bdea45d5d9515c6b9433683bfc8950402389
+  version: 1c39678a4dd0122de1b9a7e14e49b3e99b7d60b9
   subpackages:
   - fasthttputil
   - stackless
 - name: github.com/valyala/fasttemplate
   version: 3b874956e03f1636d171bda64b130f9135f42cff
 - name: golang.org/x/net
-  version: 4971afdc2f162e82d185353533d3cf16188a9f4e
+  version: 6cdc0daab091c43fc46193327e0047b4f883c613
   subpackages:
   - context
 - name: golang.org/x/sys
-  version: 30237cf4eefd639b184d1f2cb77a581ea0be8947
+  version: ca83bd2cb9abb47839b50eb4da612f00158f5870
   subpackages:
   - unix
 testImports:

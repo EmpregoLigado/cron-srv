@@ -62,6 +62,8 @@ func (env *Env) CronUpdate(c echo.Context) error {
 	cron.Status = cr.Status
 	cron.Expression = cr.Expression
 	cron.Url = cr.Url
+	cron.MaxRetries = cr.MaxRetries
+	cron.RetryTimeout = cr.RetryTimeout
 
 	if err := env.Repo.UpdateCron(&cron).Error; err != nil {
 		return err

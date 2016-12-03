@@ -1,9 +1,11 @@
 package models
 
 import (
+	"fmt"
 	"github.com/robfig/cron"
-	"github.com/sethgrid/pester"
-	"log"
+	"net/http"
+	"strconv"
+	"time"
 )
 
 type Sched interface {
@@ -11,6 +13,8 @@ type Sched interface {
 	Update(cron *Cron) error
 	Delete(id uint) error
 }
+
+type retriable func(retriable, int)
 
 type Scheduler struct {
 	Kv   map[uint]*cron.Cron
@@ -25,22 +29,29 @@ func NewScheduler() *Scheduler {
 }
 
 func (s *Scheduler) Create(cron *Cron) error {
-	runJob := func() {
-		client := pester.New()
-		client.Concurrency = 4
-		client.MaxRetries = cron.MaxRetries
-		client.Backoff = pester.ExponentialBackoff
-
-		_, err := client.Get(cron.Url)
+	runJob := func(fn retriable, retries int) {
+		_, err := http.Get(cron.Url)
 		if err != nil {
-			log.Println("Failed to run cron job at %s", cron.Url)
-			return
-		}
+			fmt.Printf("Retrying request to %s\nRetry count %s\n", cron.Url, strconv.Itoa(retries))
 
-		log.Println("Cron job sent to url %s", cron.Url)
+			if retries == 0 {
+				fmt.Printf("Max retries reached %s\nFailed to send job to %s\n", retries, cron.Url)
+				return
+			}
+
+			secs := time.Duration(cron.RetryTimeout) * time.Second
+			time.Sleep(secs)
+
+			fn(fn, retries-1)
+		} else {
+			fmt.Printf("Cron job sent to %s\n", cron.Url)
+		}
 	}
 
-	s.Cron.AddFunc(cron.Expression, runJob)
+	s.Cron.AddFunc(cron.Expression, func() {
+		runJob(runJob, cron.MaxRetries)
+	})
+
 	s.Kv[cron.Id] = s.Cron
 
 	return nil
