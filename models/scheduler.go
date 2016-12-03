@@ -8,16 +8,18 @@ import (
 
 type Sched interface {
 	Create(cron *Cron) error
+	Update(cron *Cron) error
+	Delete(id uint) error
 }
 
 type Scheduler struct {
-	Kv   map[uint]interface{}
+	Kv   map[uint]*cron.Cron
 	Cron *cron.Cron
 }
 
 func NewScheduler() *Scheduler {
 	return &Scheduler{
-		Kv:   make(map[uint]interface{}),
+		Kv:   make(map[uint]*cron.Cron),
 		Cron: cron.New(),
 	}
 }
@@ -41,5 +43,19 @@ func (s *Scheduler) Create(cron *Cron) error {
 	s.Cron.AddFunc(cron.Expression, runJob)
 	s.Kv[cron.Id] = s.Cron
 
+	return nil
+}
+
+func (s *Scheduler) Update(cron *Cron) error {
+	if err := s.Delete(cron.Id); err != nil {
+		return err
+	}
+
+	return s.Create(cron)
+}
+
+func (s *Scheduler) Delete(id uint) error {
+	s.Kv[id].Stop()
+	s.Kv[id] = nil
 	return nil
 }

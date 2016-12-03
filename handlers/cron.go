@@ -67,6 +67,10 @@ func (env *Env) CronUpdate(c echo.Context) error {
 		return err
 	}
 
+	if err := env.Sched.Update(&cron); err != nil {
+		return err
+	}
+
 	return c.JSON(http.StatusOK, cron)
 }
 
@@ -78,6 +82,10 @@ func (env *Env) CronDelete(c echo.Context) error {
 	}
 
 	if err := env.Repo.DeleteCron(&cron).Error; err != nil {
+		return err
+	}
+
+	if err := env.Sched.Delete(cron.Id); err != nil {
 		return err
 	}
 
