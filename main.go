@@ -1,11 +1,11 @@
 package main
 
 import (
+	"github.com/EmpregoLigado/cron-srv/handlers"
+	"github.com/EmpregoLigado/cron-srv/models"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/fasthttp"
 	"github.com/labstack/echo/middleware"
-	"github.com/rafaeljesus/cron-srv/handlers"
-	"github.com/rafaeljesus/cron-srv/models"
 	"log"
 	"os"
 )

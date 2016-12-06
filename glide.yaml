@@ -1,4 +1,4 @@
-package: github.com/rafaeljesus/cron-srv
+package: github.com/EmpregoLigado/cron-srv
 import:
 - package: github.com/jinzhu/gorm
   version: v1.0
