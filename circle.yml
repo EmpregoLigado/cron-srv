@@ -1,6 +1,6 @@
 machine:
   environment:
-    IMPORT_PATH: "/home/ubuntu/.go_workspace/src/github.com/rafaeljesus"
+    IMPORT_PATH: "/home/ubuntu/.go_workspace/src/github.com/EmpregoLigado"
     APP_PATH: "$IMPORT_PATH/cron-srv"
   services:
     - docker
