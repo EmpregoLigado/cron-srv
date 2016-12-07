@@ -25,6 +25,12 @@ func main() {
 
 	env := &handlers.Env{db, sc}
 
+	go func() {
+		if err := env.ScheduleAll(); err != nil {
+			log.Panic(err)
+		}
+	}()
+
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.CORS())
