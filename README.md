@@ -34,9 +34,21 @@ go build
   - with server running, access the url [localhost:3000/v1/crons](http://localhost:3000/v1/crons) and you should see a empty list `[]`
   - now we are going to insert some crons, execute in terminal:
 ```
-curl -X POST -H "Content-Type: application/json" -d '{"url":"example.com", "expression": "just-test", "status": "active", "max_retries": 2, "retry_timeout": 3}' http://localhost:3000/v1/cron
+curl -X POST -H "Content-Type: application/json" -d '{"url":"example.com/api/v1/stats", "expression": "0 5 * * * *", "status": "active", "max_retries": 2, "retry_timeout": 3}' http://localhost:3000/v1/cron
 ```
 and one new cron will be listed in [localhost:3000/v1/crons](http://localhost:3000/v1/crons)
+
+The cron expression format allowed is:
+
+|Field name| Mandatory?|Allowed values|Allowed special characters|
+|:--|:--|:--|:--|
+|Seconds      | Yes        | 0-59            | * / , -|
+|Minutes      | Yes        | 0-59            | * / , -|
+|Hours        | Yes        | 0-23            | * / , -|
+|Day of month | Yes        | 1-31            | * / , - ?|
+|Month        | Yes        | 1-12 or JAN-DEC | * / , -|
+|Day of week  | Yes        | 0-6 or SUN-SAT  | * / , - ?|
+more details about expression format [here](https://godoc.org/github.com/robfig/cron#hdr-CRON_Expression_Format)
 
 ## API Documentation
 |HTTP verb|path|handle||
