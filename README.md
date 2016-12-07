@@ -57,5 +57,6 @@ and one new cron will be listed in [localhost:3000/v1/crons](http://localhost:30
 
 ## Badges
 [![CircleCI](https://circleci.com/gh/EmpregoLigado/cron-srv.svg?style=svg)](https://circleci.com/gh/EmpregoLigado/cron-srv)
+[![Go Report Card](https://goreportcard.com/badge/github.com/EmpregoLigado/cron-srv)](https://goreportcard.com/report/github.com/EmpregoLigado/cron-srv)
 [![](https://images.microbadger.com/badges/image/rafaeljesus/cron-srv.svg)](https://microbadger.com/images/rafaeljesus/cron-srv "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/rafaeljesus/cron-srv.svg)](https://microbadger.com/images/rafaeljesus/cron-srv "Get your own version badge on microbadger.com")
