@@ -17,23 +17,36 @@ export CRON_SRV_PORT=3000
 ```
 > **Note:** You must have created the database 'cron_srv_dev' in postgres running at localhost (or replace with valid database name and IP);
 
-## Using
-  - build the project
+## Installation
 ```sh
+mkdir -p $GOPATH/src/github.com/EmpregoLigado
+cd $GOPATH/src/github.com/EmpregoLigado 
+git clone https://github.com/EmpregoLigado/cron-srv.git
 cd cron-srv
 go build
 ```
-  - run the server
+## Running server
 ```
 ./cron-srv
 # => Starting Cron Service at port 3000
 ```
-  - access the url [localhost:3000/v1/crons](http://localhost:3000/v1/crons) and you should see a empty list `[]`
+### Examples
+  - with server running, access the url [localhost:3000/v1/crons](http://localhost:3000/v1/crons) and you should see a empty list `[]`
   - now we are going to insert some crons, execute in terminal:
 ```
 curl -X POST -H "Content-Type: application/json" -d '{"url":"example.com", "expression": "just-test", "status": "active", "max_retries": 2, "retry_timeout": 3}' http://localhost:3000/v1/cron
 ```
 and one new cron will be listed in [localhost:3000/v1/crons](http://localhost:3000/v1/crons)
+
+## API Documentation
+|HTTP verb|path|handle||
+|:--|:--|:--|:--|
+|GET|/v1/healthz|HealthzIndex|retun a state of server `{"alive":true}`|
+|GET|/v1/crons|CronIndex|display a list of all crons|
+|POST|/v1/cron|CronCreate|create a new cron|
+|GET|/v1/cron/:id|CronShow|display a specific cron|
+|PUT|/v1/cron/:id|CronUpdate|update a specific cron|
+|DELETE|/v1/cron/:id|CronDelete|delete a specific cron|
 
 ## Contributing
 - Fork it
