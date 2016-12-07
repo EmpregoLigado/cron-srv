@@ -1,8 +1,8 @@
 package handlers
 
 import (
+	"github.com/EmpregoLigado/cron-srv/models"
 	"github.com/labstack/echo"
-	"github.com/rafaeljesus/cron-srv/models"
 	"net/http"
 	"strconv"
 )
@@ -22,6 +22,7 @@ func (env *Env) CronIndex(c echo.Context) error {
 
 func (env *Env) CronCreate(c echo.Context) error {
 	cron := models.Cron{}
+
 	if err := c.Bind(&cron); err != nil {
 		return err
 	}
