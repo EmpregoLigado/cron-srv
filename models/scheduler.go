@@ -28,6 +28,10 @@ func NewScheduler() *Scheduler {
 	}
 }
 
+func (s *Scheduler) Start() {
+	s.Cron.Start()
+}
+
 func (s *Scheduler) Create(cron *Cron) error {
 	runJob := func(fn retriable, retries int) {
 		_, err := http.Get(cron.Url)
