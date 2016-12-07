@@ -21,7 +21,7 @@ func main() {
 
 	db.AutoMigrate(&models.Cron{})
 	sc := models.NewScheduler()
-	sc.Cron.Start()
+	sc.Start()
 
 	env := &handlers.Env{db, sc}
 
