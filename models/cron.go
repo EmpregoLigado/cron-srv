@@ -17,25 +17,25 @@ type Cron struct {
 	DeletedAt    *time.Time `json:"created_at, omitempty"`
 }
 
-func (repo *DB) CreateCron(u *Cron) *gorm.DB {
-	return repo.Create(u)
+func (repo *DB) CreateCron(c *Cron) error {
+	return repo.Create(c).Error
 }
 
-func (repo *DB) FindCronById(c *Cron, id int) *gorm.DB {
-	return repo.Find(c, id)
+func (repo *DB) FindCronById(c *Cron, id int) error {
+	return repo.Find(c, id).Error
 }
 
-func (repo *DB) UpdateCron(c *Cron) *gorm.DB {
-	return repo.Save(c)
+func (repo *DB) UpdateCron(c *Cron) error {
+	return repo.Save(c).Error
 }
 
-func (repo *DB) DeleteCron(c *Cron) *gorm.DB {
-	return repo.Delete(c)
+func (repo *DB) DeleteCron(c *Cron) error {
+	return repo.Delete(c).Error
 }
 
-func (repo *DB) Search(q *Query, crons *[]Cron) *gorm.DB {
+func (repo *DB) Search(q *Query, crons *[]Cron) error {
 	if q.IsEmpty() {
-		return repo.Find(crons)
+		return repo.Find(crons).Error
 	}
 
 	var r *gorm.DB
@@ -47,5 +47,5 @@ func (repo *DB) Search(q *Query, crons *[]Cron) *gorm.DB {
 		r = repo.Where("expression = ?", q.Expression)
 	}
 
-	return r.Find(crons)
+	return r.Find(crons).Error
 }
