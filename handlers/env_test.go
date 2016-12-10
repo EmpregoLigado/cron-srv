@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/rafaeljesus/cron-srv/models"
+	"github.com/EmpregoLigado/cron-srv/models"
 	"testing"
 )
 
