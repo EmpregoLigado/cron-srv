@@ -7,14 +7,18 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/fasthttp"
 	"github.com/labstack/echo/middleware"
-	"os"
+	"github.com/spf13/viper"
 )
 
-var CRON_SRV_PORT = os.Getenv("CRON_SRV_PORT")
-var CRON_SRV_DB = os.Getenv("CRON_SRV_DB")
+const (
+	cron_srv_db   = "CRON_SRV_DB"
+	cron_srv_port = "CRON_SRV_PORT"
+)
 
 func main() {
-	db, err := models.NewDB(CRON_SRV_DB)
+	viper.AutomaticEnv()
+
+	db, err := models.NewDB(viper.GetString(cron_srv_db))
 	if err != nil {
 		log.WithFields(log.Fields{
 			"error": err,
@@ -50,5 +54,5 @@ func main() {
 		"port": CRON_SRV_PORT,
 	}).Info("Starting Cron Service")
 
-	e.Run(fasthttp.New(":" + CRON_SRV_PORT))
+	e.Run(fasthttp.New(":" + viper.GetString(cron_srv_port)))
 }
