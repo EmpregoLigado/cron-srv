@@ -2,9 +2,8 @@ package models
 
 type RepoMock struct{}
 
-func (repo *RepoMock) Search(*Query, *[]Cron) error {
-	crons := make([]*Cron, 0)
-	crons = append(crons, &Cron{Expression: "* * * * * *"})
+func (repo *RepoMock) Search(q *Query, crons *[]Cron) error {
+	*crons = append(*crons, Cron{Expression: "* * * * * *"})
 	return nil
 }
 
