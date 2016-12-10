@@ -1,4 +1,4 @@
-## Cron Srv (Cron Service)
+## Cron Srv
 
 * All the flexibility and power of Cron as a Service.
 * Simple REST protocol, integrating with a web application in a easy and straightforward way.
