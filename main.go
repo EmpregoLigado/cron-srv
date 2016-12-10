@@ -3,10 +3,10 @@ package main
 import (
 	"github.com/EmpregoLigado/cron-srv/handlers"
 	"github.com/EmpregoLigado/cron-srv/models"
+	log "github.com/Sirupsen/logrus"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/fasthttp"
 	"github.com/labstack/echo/middleware"
-	"log"
 	"os"
 )
 
@@ -16,7 +16,9 @@ var CRON_SRV_DB = os.Getenv("CRON_SRV_DB")
 func main() {
 	db, err := models.NewDB(CRON_SRV_DB)
 	if err != nil {
-		log.Panic(err)
+		log.WithFields(log.Fields{
+			"error": err,
+		}).Fatal("Failed to init database connection!")
 	}
 
 	db.AutoMigrate(&models.Cron{})
@@ -38,7 +40,9 @@ func main() {
 	v1.PUT("/cron/:id", env.CronUpdate)
 	v1.DELETE("/cron/:id", env.CronDelete)
 
-	log.Print("Starting Cron Service at port ", CRON_SRV_PORT)
+	log.WithFields(log.Fields{
+		"port": CRON_SRV_PORT,
+	}).Info("Starting Cron Service")
 
 	e.Run(fasthttp.New(":" + CRON_SRV_PORT))
 }
