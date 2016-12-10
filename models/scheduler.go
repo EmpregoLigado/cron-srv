@@ -1,10 +1,9 @@
 package models
 
 import (
-	"fmt"
+	log "github.com/Sirupsen/logrus"
 	"github.com/robfig/cron"
 	"net/http"
-	"strconv"
 	"time"
 )
 
@@ -36,10 +35,15 @@ func (s *Scheduler) Create(cron *Cron) error {
 	runJob := func(fn retriable, retries int) {
 		_, err := http.Get(cron.Url)
 		if err != nil {
-			fmt.Printf("Retrying request to %s\nRetry count %s\n", cron.Url, strconv.Itoa(retries))
+			l := log.WithFields(log.Fields{
+				"url":     cron.Url,
+				"retries": retries,
+			})
+
+			l.Info("Retrying to send event")
 
 			if retries == 0 {
-				fmt.Printf("Max retries reached %s\nFailed to send job to %s\n", retries, cron.Url)
+				l.Info("Max retries reached")
 				return
 			}
 
@@ -48,7 +52,9 @@ func (s *Scheduler) Create(cron *Cron) error {
 
 			fn(fn, retries-1)
 		} else {
-			fmt.Printf("Cron job sent to %s\n", cron.Url)
+			log.WithFields(log.Fields{
+				"url": cron.Url,
+			}).Info("Cron job event sent")
 		}
 	}
 
