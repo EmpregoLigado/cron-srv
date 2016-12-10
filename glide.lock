@@ -3,6 +3,19 @@ updated: 2016-12-10T14:51:10.357123537-02:00
 imports:
 - name: github.com/dgrijalva/jwt-go
   version: 9ed569b5d1ac936e6494082958d63a6aa4fff99a
+- name: github.com/fsnotify/fsnotify
+  version: fd9ec7deca8bf46ecd2a795baaacf2b3a9be1197
+- name: github.com/hashicorp/hcl
+  version: 37ab263305aaeb501a60eb16863e808d426e37f2
+  subpackages:
+  - hcl/ast
+  - hcl/parser
+  - hcl/scanner
+  - hcl/strconv
+  - hcl/token
+  - json/parser
+  - json/scanner
+  - json/token
 - name: github.com/jinzhu/gorm
   version: 5174cc5c242a728b435ea2be8a2f7f998e15429b
   subpackages:
@@ -40,31 +53,58 @@ imports:
   subpackages:
   - hstore
   - oid
+- name: github.com/magiconair/properties
+  version: 9c47895dc1ce54302908ab8a43385d1f5df2c11c
 - name: github.com/mattn/go-colorable
   version: d228849504861217f796da67fae4f6e347643f15
 - name: github.com/mattn/go-isatty
   version: 30a891c33c7cde7b02a981314b4228ec99380cca
+- name: github.com/mitchellh/mapstructure
+  version: 5a0325d7fafaac12dda6e7fb8bd222ec1b69875e
+- name: github.com/pelletier/go-buffruneio
+  version: df1e16fde7fc330a0ca68167c23bf7ed6ac31d6d
+- name: github.com/pelletier/go-toml
+  version: ce7be745f09fe4ff89af8e3ea744e1deabf20ee3
 - name: github.com/robfig/cron
   version: b024fc5ea0e34bc3f83d9941c8d60b0622bfaca4
 - name: github.com/Sirupsen/logrus
   version: d26492970760ca5d33129d2d799e34be5c4782eb
+- name: github.com/spf13/afero
+  version: 2f30b2a92c0e5700bcfe4715891adb1f2a7a406d
+  subpackages:
+  - mem
+- name: github.com/spf13/cast
+  version: 24b6558033ffe202bf42f0f3b870dcc798dd2ba8
+- name: github.com/spf13/jwalterweatherman
+  version: 33c24e77fb80341fe7130ee7c594256ff08ccc46
+- name: github.com/spf13/pflag
+  version: 5ccb023bc27df288a957c5e994cd44fd19619465
+- name: github.com/spf13/viper
+  version: 651d9d916abc3c3d6a91a12549495caba5edffd2
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasthttp
-  version: 1c39678a4dd0122de1b9a7e14e49b3e99b7d60b9
+  version: 1dc5bc133b3436ba3e2a3a0690e94e26b9d823b2
   subpackages:
   - fasthttputil
   - stackless
 - name: github.com/valyala/fasttemplate
   version: 3b874956e03f1636d171bda64b130f9135f42cff
 - name: golang.org/x/net
-  version: 6cdc0daab091c43fc46193327e0047b4f883c613
+  version: b1a2d6e8c8b5fc8f601ead62536f02a8e1b6217d
   subpackages:
   - context
 - name: golang.org/x/sys
-  version: ca83bd2cb9abb47839b50eb4da612f00158f5870
+  version: 478fcf54317e52ab69f40bb4c7a1520288d7f7ea
   subpackages:
   - unix
+- name: golang.org/x/text
+  version: 47a200a05c8b3fd1b698571caecbb68beb2611ec
+  subpackages:
+  - transform
+  - unicode/norm
+- name: gopkg.in/yaml.v2
+  version: a5b47d31c556af34a302ce5d659e6fea44d90de0
 testImports:
 - name: github.com/davecgh/go-spew
   version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9
