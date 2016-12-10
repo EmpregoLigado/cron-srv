@@ -5,7 +5,7 @@
 * No more wasting time building and managing scheduling infrastructure.
 
 ## Basic Concepts
-Cron Srv works by calling back to your application via HTTP POST according to a schedule constructed by you or your application.
+Cron Srv works by calling back to your application via HTTP GET according to a schedule constructed by you or your application.
 
 ## Setup
 Env vars
