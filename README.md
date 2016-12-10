@@ -1,6 +1,8 @@
 ## Cron Srv
 
-* Cron Scheduler Microservice.
+* All the flexibility and power of Cron as a Service.
+* Simple REST protocol, integrating with a web application in a easy and straightforward way.
+* No more wasting time building and managing scheduling infrastructure.
 
 ## Setup
 With [golang](https://golang.org/doc/install) installed
