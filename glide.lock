@@ -1,5 +1,5 @@
-hash: e13bf90c620b96098745985c458f460b1e3a83b53236d237e855cf39dd588354
-updated: 2016-12-06T00:47:13.752788357-02:00
+hash: cbb2bd670b0685b26366db4aca2ec9d2ce5bcb928633da80d4bceb768c2ae6d3
+updated: 2016-12-10T14:51:10.357123537-02:00
 imports:
 - name: github.com/dgrijalva/jwt-go
   version: 9ed569b5d1ac936e6494082958d63a6aa4fff99a
@@ -46,6 +46,8 @@ imports:
   version: 30a891c33c7cde7b02a981314b4228ec99380cca
 - name: github.com/robfig/cron
   version: b024fc5ea0e34bc3f83d9941c8d60b0622bfaca4
+- name: github.com/Sirupsen/logrus
+  version: d26492970760ca5d33129d2d799e34be5c4782eb
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasthttp
