@@ -51,7 +51,7 @@ func main() {
 	v1.DELETE("/cron/:id", env.CronDelete)
 
 	log.WithFields(log.Fields{
-		"port": CRON_SRV_PORT,
+		"port": viper.GetString(cron_srv_port),
 	}).Info("Starting Cron Service")
 
 	e.Run(fasthttp.New(":" + viper.GetString(cron_srv_port)))
