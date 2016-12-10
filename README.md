@@ -1,8 +1,11 @@
-## Cron Srv
+## Cron Srv (Cron Service)
 
 * All the flexibility and power of Cron as a Service.
 * Simple REST protocol, integrating with a web application in a easy and straightforward way.
 * No more wasting time building and managing scheduling infrastructure.
+
+## Basic Concepts
+Cron Srv works by calling back to your application via HTTP POST according to a schedule constructed by you or your application.
 
 ## Setup
 With [golang](https://golang.org/doc/install) installed
