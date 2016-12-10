@@ -5,14 +5,6 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-type Repo interface {
-	CreateCron(*Cron) *gorm.DB
-	FindCronById(*Cron, int) *gorm.DB
-	UpdateCron(*Cron) *gorm.DB
-	DeleteCron(*Cron) *gorm.DB
-	Search(*Query, *[]Cron) *gorm.DB
-}
-
 type DB struct {
 	*gorm.DB
 }
