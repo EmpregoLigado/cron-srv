@@ -1,7 +1,8 @@
 package models
 
 type Query struct {
-	Status, Expression string
+	Status     string
+	Expression string
 }
 
 func (q *Query) IsEmpty() bool {
