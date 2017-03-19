@@ -19,7 +19,7 @@ test:
   override:
     - cd "$APP_PATH"
     - go vet
-    - go test -v ./api/... ./scheduler/... -v -race -cover $(glide nv)
+    - go test ./api/... ./scheduler/... -v -race -cover $(glide nv)
 
 deployment:
   master:
