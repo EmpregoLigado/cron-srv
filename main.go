@@ -8,9 +8,13 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/nbari/violetear"
 	"net/http"
+	"runtime"
 )
 
 func main() {
+	numcpu := runtime.NumCPU()
+	runtime.GOMAXPROCS(numcpu)
+
 	db, err := models.NewDB(models.DBConfig{
 		Url: conf.CRON_SRV_DB,
 	})
