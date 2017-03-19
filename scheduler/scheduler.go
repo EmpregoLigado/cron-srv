@@ -4,11 +4,9 @@ import (
 	"errors"
 	"github.com/EmpregoLigado/cron-srv/models"
 	"github.com/EmpregoLigado/cron-srv/repo"
-	log "github.com/Sirupsen/logrus"
+	"github.com/EmpregoLigado/cron-srv/runner"
 	"github.com/robfig/cron"
-	"net/http"
 	"sync"
-	"time"
 )
 
 var (
@@ -22,8 +20,6 @@ type Scheduler interface {
 	Find(id uint) (cron *cron.Cron, err error)
 	ScheduleAll(repo repo.Repo) (err error)
 }
-
-type retriable func(retriable, int)
 
 type scheduler struct {
 	sync.RWMutex
@@ -58,40 +54,22 @@ func (s *scheduler) ScheduleAll(repo repo.Repo) (err error) {
 	return
 }
 
-func (s *scheduler) Create(cron *models.Event) (err error) {
-	runJob := func(fn retriable, retries int) {
-		_, err := http.Get(cron.Url)
-		if err == nil {
-			log.WithField("url", cron.Url).Info("Event job event sent")
-			return
+func (s *scheduler) Create(event *models.Event) (err error) {
+	s.Cron.AddFunc(event.Expression, func() {
+		rc := &runner.Config{
+			Url:     event.Url,
+			Retries: event.Retries,
+			Timeout: event.Timeout,
 		}
 
-		l := log.WithFields(log.Fields{
-			"url":     cron.Url,
-			"retries": retries,
-		})
-
-		l.Info("Retrying to send event")
-
-		if retries == 0 {
-			l.Info("Max retries reached")
-			return
-		}
-
-		secs := time.Duration(cron.RetryTimeout) * time.Second
-		time.Sleep(secs)
-
-		fn(fn, retries-1)
-	}
-
-	s.Cron.AddFunc(cron.Expression, func() {
-		runJob(runJob, cron.MaxRetries)
+		r := runner.New()
+		r.Run() <- rc
 	})
 
 	s.Lock()
 	defer s.Unlock()
 
-	s.Kv[cron.Id] = s.Cron
+	s.Kv[event.Id] = s.Cron
 
 	return
 }

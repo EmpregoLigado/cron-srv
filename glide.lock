@@ -1,6 +1,10 @@
-hash: 28bb184059dcc14bc710ae6347f461d2de56c899c597cb56a15855570c26d776
-updated: 2017-03-18T17:44:12.638593431-03:00
+hash: de966b37092583f1951f814f61ec8eb887bf365c832fd572b7332f1ce92c6116
+updated: 2017-03-19T16:07:39.306307579-03:00
 imports:
+- name: github.com/cenk/backoff
+  version: 3db60c813733fce657c114634171689bbf1f8dee
+- name: github.com/facebookgo/clock
+  version: 600d898af40aa09a7a93ecb9265d87b0504b6f03
 - name: github.com/fsnotify/fsnotify
   version: fd9ec7deca8bf46ecd2a795baaacf2b3a9be1197
 - name: github.com/hashicorp/hcl
@@ -37,6 +41,8 @@ imports:
   version: a1f048ba24490f9b0674a67e1ce995d685cddf4a
 - name: github.com/robfig/cron
   version: b024fc5ea0e34bc3f83d9941c8d60b0622bfaca4
+- name: github.com/rubyist/circuitbreaker
+  version: 7e3e7fbe9c62b943d487af023566a79d9eb22d3b
 - name: github.com/Sirupsen/logrus
   version: ba1b36c82c5e05c4f912a88eab0dcd91a171688f
 - name: github.com/spf13/afero
@@ -51,6 +57,10 @@ imports:
   version: a232f6d9f87afaaa08bafaff5da685f974b83313
 - name: github.com/spf13/viper
   version: 5ed0fc31f7f453625df314d8e66b9791e8d13003
+- name: golang.org/x/net
+  version: f315505cf3349909cdf013ea56690da34e96a451
+  subpackages:
+  - context
 - name: golang.org/x/sys
   version: d75a52659825e75fff6158388dddc6a5b04f9ba5
   subpackages:

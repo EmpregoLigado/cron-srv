@@ -11,3 +11,5 @@ import:
 - package: github.com/robfig/cron
   version: v1
 - package: github.com/spf13/viper
+- package: github.com/rubyist/circuitbreaker
+  version: v2.2.0
