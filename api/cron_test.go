@@ -2,9 +2,8 @@ package api
 
 import (
 	"encoding/json"
+	"github.com/EmpregoLigado/cron-srv/mock"
 	"github.com/EmpregoLigado/cron-srv/models"
-	"github.com/EmpregoLigado/cron-srv/repo"
-	"github.com/EmpregoLigado/cron-srv/scheduler"
 	"github.com/nbari/violetear"
 	"net/http"
 	"net/http/httptest"
@@ -14,8 +13,8 @@ import (
 )
 
 func TestEventsIndex(t *testing.T) {
-	schedulerMock := scheduler.NewMock()
-	repoMock := repo.NewMock()
+	schedulerMock := mock.NewScheduler()
+	repoMock := mock.NewRepo()
 	h := NewAPIHandler(repoMock, schedulerMock)
 
 	res := httptest.NewRecorder()
@@ -43,8 +42,8 @@ func TestEventsIndex(t *testing.T) {
 }
 
 func TestEventsIndexByStatus(t *testing.T) {
-	schedulerMock := scheduler.NewMock()
-	repoMock := repo.NewMock()
+	schedulerMock := mock.NewScheduler()
+	repoMock := mock.NewRepo()
 	h := NewAPIHandler(repoMock, schedulerMock)
 
 	res := httptest.NewRecorder()
@@ -67,8 +66,8 @@ func TestEventsIndexByStatus(t *testing.T) {
 }
 
 func TestEventsIndexByExpression(t *testing.T) {
-	schedulerMock := scheduler.NewMock()
-	repoMock := repo.NewMock()
+	schedulerMock := mock.NewScheduler()
+	repoMock := mock.NewRepo()
 	h := NewAPIHandler(repoMock, schedulerMock)
 
 	res := httptest.NewRecorder()
@@ -91,8 +90,8 @@ func TestEventsIndexByExpression(t *testing.T) {
 }
 
 func TestCronCreate(t *testing.T) {
-	schedulerMock := scheduler.NewMock()
-	repoMock := repo.NewMock()
+	schedulerMock := mock.NewScheduler()
+	repoMock := mock.NewRepo()
 	h := NewAPIHandler(repoMock, schedulerMock)
 
 	res := httptest.NewRecorder()
@@ -120,8 +119,8 @@ func TestCronCreate(t *testing.T) {
 }
 
 func TestCronShow(t *testing.T) {
-	schedulerMock := scheduler.NewMock()
-	repoMock := repo.NewMock()
+	schedulerMock := mock.NewScheduler()
+	repoMock := mock.NewRepo()
 	h := NewAPIHandler(repoMock, schedulerMock)
 
 	res := httptest.NewRecorder()
@@ -145,8 +144,8 @@ func TestCronShow(t *testing.T) {
 }
 
 func TestEventsUpdate(t *testing.T) {
-	schedulerMock := scheduler.NewMock()
-	repoMock := repo.NewMock()
+	schedulerMock := mock.NewScheduler()
+	repoMock := mock.NewRepo()
 	h := NewAPIHandler(repoMock, schedulerMock)
 
 	res := httptest.NewRecorder()

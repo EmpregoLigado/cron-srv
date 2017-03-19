@@ -1,13 +1,13 @@
 package scheduler
 
 import (
+	"github.com/EmpregoLigado/cron-srv/mock"
 	"github.com/EmpregoLigado/cron-srv/models"
-	"github.com/EmpregoLigado/cron-srv/repo"
 	"testing"
 )
 
 func TestScheduleAll(t *testing.T) {
-	repoMock := repo.NewMock()
+	repoMock := mock.NewRepo()
 	s := New()
 	if err := s.ScheduleAll(repoMock); err != nil {
 		t.Errorf("Expected to schedule all events %s", err)

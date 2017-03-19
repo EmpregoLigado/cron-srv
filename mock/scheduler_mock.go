@@ -1,8 +1,9 @@
-package scheduler
+package mock
 
 import (
 	"github.com/EmpregoLigado/cron-srv/models"
 	"github.com/EmpregoLigado/cron-srv/repo"
+	"github.com/robfig/cron"
 )
 
 type SchedulerMock struct {
@@ -11,7 +12,7 @@ type SchedulerMock struct {
 	Deleted bool
 }
 
-func NewMock() *SchedulerMock {
+func NewScheduler() *SchedulerMock {
 	return &SchedulerMock{
 		Created: false,
 		Updated: false,
@@ -31,6 +32,10 @@ func (s *SchedulerMock) Update(cron *models.Cron) (err error) {
 
 func (s *SchedulerMock) Delete(id uint) (err error) {
 	s.Deleted = true
+	return
+}
+
+func (s SchedulerMock) Find(id uint) (c *cron.Cron, err error) {
 	return
 }
 

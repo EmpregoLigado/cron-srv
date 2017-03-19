@@ -1,4 +1,4 @@
-package repo
+package mock
 
 import "github.com/EmpregoLigado/cron-srv/models"
 
@@ -12,7 +12,7 @@ type RepoMock struct {
 	ByExpression bool
 }
 
-func NewMock() *RepoMock {
+func NewRepo() *RepoMock {
 	return &RepoMock{
 		Created:      false,
 		Updated:      false,
