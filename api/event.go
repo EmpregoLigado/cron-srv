@@ -96,8 +96,8 @@ func (h *APIHandler) EventsUpdate(w http.ResponseWriter, r *http.Request) {
 	event.Status = e.Status
 	event.Expression = e.Expression
 	event.Url = e.Url
-	event.MaxRetries = e.MaxRetries
-	event.RetryTimeout = e.RetryTimeout
+	event.Retries = e.Retries
+	event.Timeout = e.Timeout
 
 	if err := h.Repo.UpdateEvent(event); err != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
