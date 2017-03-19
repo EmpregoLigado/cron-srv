@@ -17,9 +17,7 @@ dependencies:
 
 test:
   override:
-    - cd "$APP_PATH"
-    - go vet
-    - go test ./api/... ./scheduler/... -v -race -cover $(glide nv)
+    - cd "$APP_PATH" && go vet && go test ./api/... ./scheduler/... -v -race -cover $(glide nv)
 
 deployment:
   master:
