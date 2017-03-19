@@ -1,58 +1,48 @@
 package main
 
 import (
-	"github.com/EmpregoLigado/cron-srv/handlers"
+	"github.com/EmpregoLigado/cron-srv/api"
+	"github.com/EmpregoLigado/cron-srv/conf"
 	"github.com/EmpregoLigado/cron-srv/models"
+	"github.com/EmpregoLigado/cron-srv/scheduler"
 	log "github.com/Sirupsen/logrus"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/engine/fasthttp"
-	"github.com/labstack/echo/middleware"
-	"github.com/spf13/viper"
-)
-
-const (
-	cron_srv_db   = "CRON_SRV_DB"
-	cron_srv_port = "CRON_SRV_PORT"
+	"github.com/nbari/violetear"
+	"net/http"
 )
 
 func main() {
-	viper.AutomaticEnv()
+	db, err := models.NewDB(models.DBConfig{
+		Url: conf.CRON_SRV_DB,
+	})
 
-	db, err := models.NewDB(viper.GetString(cron_srv_db))
 	if err != nil {
-		log.WithFields(log.Fields{
-			"error": err,
-		}).Fatal("Failed to init database connection!")
+		log.WithError(err).Fatal("Failed to init database connection!")
+		return
 	}
+	defer db.Close()
+	cron := new(models.Cron)
+	db.AutoMigrate(cron)
 
-	db.AutoMigrate(&models.Cron{})
-	sc := models.NewScheduler()
-	sc.Start()
-
-	env := &handlers.Env{db, sc}
-
+	sc := scheduler.New()
 	go func() {
-		if err := env.ScheduleAll(); err != nil {
-			log.Panic(err)
+		if err := sc.ScheduleAll(db); err != nil {
+			log.WithError(err).Fatal("Failed to schedule crons from database!")
 		}
 	}()
 
-	e := echo.New()
-	e.Use(middleware.Logger())
-	e.Use(middleware.CORS())
+	h := api.NewAPIHandler(db, sc)
 
-	v1 := e.Group("/v1")
-	v1.GET("/healthz", env.HealthzIndex)
+	router := violetear.New()
+	router.LogRequests = true
+	router.RequestID = "X-Request-ID"
+	router.AddRegex(":id", `^\d+$`)
+	router.HandleFunc("/v1/healthz", h.HealthzIndex, "GET")
+	router.HandleFunc("/v1/events", h.EventsIndex, "GET")
+	router.HandleFunc("/v1/events", h.EventsCreate, "POST")
+	router.HandleFunc("/v1/events/:id", h.EventsShow, "GET")
+	router.HandleFunc("/v1/events/:id", h.EventsUpdate, "PUT")
+	router.HandleFunc("/v1/events/:id", h.EventsDelete, "DELETE")
 
-	v1.GET("/crons", env.CronIndex)
-	v1.POST("/cron", env.CronCreate)
-	v1.GET("/cron/:id", env.CronShow)
-	v1.PUT("/cron/:id", env.CronUpdate)
-	v1.DELETE("/cron/:id", env.CronDelete)
-
-	log.WithFields(log.Fields{
-		"port": viper.GetString(cron_srv_port),
-	}).Info("Starting Cron Service")
-
-	e.Run(fasthttp.New(":" + viper.GetString(cron_srv_port)))
+	log.WithField("port", conf.CRON_SRV_PORT).Info("Starting Cron Service")
+	log.Fatal(http.ListenAndServe(":"+conf.CRON_SRV_PORT, router))
 }
