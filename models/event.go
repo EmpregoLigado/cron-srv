@@ -5,37 +5,37 @@ import (
 	"time"
 )
 
-type Cron struct {
+type Event struct {
 	Id           uint       `json:"id",sql:"primary_key"`
 	Url          string     `json:"url",sql:"not null"`
 	Expression   string     `json:"expression",sql:"not null"`
 	Status       string     `json:"status",sql:"not null"`
-	MaxRetries   int        `json:"max_retries, sql:"DEFAULT": 1`
-	RetryTimeout int        `json:"retry_timeout, sql:"DEFAULT": 5`
+	MaxRetries   int        `json:"max_retries,sql:"DEFAULT": 1`
+	RetryTimeout int        `json:"retry_timeout,sql:"DEFAULT": 5`
 	CreatedAt    time.Time  `json:"created_at",sql:"not null"`
 	UpdatedAt    time.Time  `json:"updated_at",sql:"not null"`
-	DeletedAt    *time.Time `json:"created_at, omitempty"`
+	DeletedAt    *time.Time `json:"created_at,omitempty"`
 }
 
-func (db *DB) CreateCron(c *Cron) error {
+func (db *DB) CreateEvent(c *Event) error {
 	return db.Create(c).Error
 }
 
-func (db *DB) FindCronById(c *Cron, id int) error {
+func (db *DB) FindEventById(c *Event, id int) error {
 	return db.Find(c, id).Error
 }
 
-func (db *DB) UpdateCron(c *Cron) error {
+func (db *DB) UpdateEvent(c *Event) error {
 	return db.Save(c).Error
 }
 
-func (db *DB) DeleteCron(c *Cron) error {
+func (db *DB) DeleteEvent(c *Event) error {
 	return db.Delete(c).Error
 }
 
-func (db *DB) Search(q *Query, crons *[]Cron) error {
+func (db *DB) FindEvents(events *[]Event, q *Query) error {
 	if q.IsEmpty() {
-		return db.Find(crons).Error
+		return db.Find(events).Error
 	}
 
 	var r *gorm.DB
@@ -47,5 +47,5 @@ func (db *DB) Search(q *Query, crons *[]Cron) error {
 		r = db.Where("expression = ?", q.Expression)
 	}
 
-	return r.Find(crons).Error
+	return r.Find(events).Error
 }

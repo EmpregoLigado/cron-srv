@@ -12,12 +12,12 @@ import (
 )
 
 var (
-	ErrCronNotExist = errors.New("finding a scheduled event requires a existent cron id")
+	ErrEventNotExist = errors.New("finding a scheduled event requires a existent cron id")
 )
 
 type Scheduler interface {
-	Create(cron *models.Cron) (err error)
-	Update(cron *models.Cron) (err error)
+	Create(cron *models.Event) (err error)
+	Update(cron *models.Event) (err error)
 	Delete(id uint) (err error)
 	Find(id uint) (cron *cron.Cron, err error)
 	ScheduleAll(repo repo.Repo) (err error)
@@ -43,9 +43,9 @@ func New() Scheduler {
 }
 
 func (s *scheduler) ScheduleAll(repo repo.Repo) (err error) {
-	crons := []models.Cron{}
+	crons := []models.Event{}
 	query := new(models.Query)
-	if err = repo.Search(query, &crons); err != nil {
+	if err = repo.FindEvents(&crons, query); err != nil {
 		return
 	}
 
@@ -58,11 +58,11 @@ func (s *scheduler) ScheduleAll(repo repo.Repo) (err error) {
 	return
 }
 
-func (s *scheduler) Create(cron *models.Cron) (err error) {
+func (s *scheduler) Create(cron *models.Event) (err error) {
 	runJob := func(fn retriable, retries int) {
 		_, err := http.Get(cron.Url)
 		if err == nil {
-			log.WithField("url", cron.Url).Info("Cron job event sent")
+			log.WithField("url", cron.Url).Info("Event job event sent")
 			return
 		}
 
@@ -102,14 +102,14 @@ func (s *scheduler) Find(id uint) (cron *cron.Cron, err error) {
 
 	cron, found := s.Kv[id]
 	if !found {
-		err = ErrCronNotExist
+		err = ErrEventNotExist
 		return
 	}
 
 	return
 }
 
-func (s *scheduler) Update(cron *models.Cron) (err error) {
+func (s *scheduler) Update(cron *models.Event) (err error) {
 	if err = s.Delete(cron.Id); err != nil {
 		return
 	}
@@ -123,7 +123,7 @@ func (s scheduler) Delete(id uint) (err error) {
 
 	_, found := s.Kv[id]
 	if !found {
-		err = ErrCronNotExist
+		err = ErrEventNotExist
 		return
 	}
 

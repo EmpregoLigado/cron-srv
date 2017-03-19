@@ -16,7 +16,7 @@ func TestScheduleAll(t *testing.T) {
 
 func TestSchedulerCreate(t *testing.T) {
 	s := New()
-	c := &models.Cron{Id: 1, Expression: "* * * * *"}
+	c := &models.Event{Id: 1, Expression: "* * * * *"}
 	if err := s.Create(c); err != nil {
 		t.Errorf("Expected to schedule a cron %s", err)
 	}
@@ -24,7 +24,7 @@ func TestSchedulerCreate(t *testing.T) {
 
 func TestSchedulerFind(t *testing.T) {
 	s := New()
-	c := &models.Cron{Id: 1, Expression: "* * * * *"}
+	c := &models.Event{Id: 1, Expression: "* * * * *"}
 	if err := s.Create(c); err != nil {
 		t.Errorf("Expected to schedule a cron %s", err)
 	}
@@ -37,7 +37,7 @@ func TestSchedulerFind(t *testing.T) {
 
 func TestSchedulerUpdate(t *testing.T) {
 	s := New()
-	c := &models.Cron{Id: 1, Expression: "* * * * *"}
+	c := &models.Event{Id: 1, Expression: "* * * * *"}
 	if err := s.Create(c); err != nil {
 		t.Errorf("Expected to schedule a cron %s", err)
 	}
@@ -50,7 +50,7 @@ func TestSchedulerUpdate(t *testing.T) {
 
 func TestSchedulerDelete(t *testing.T) {
 	s := New()
-	c := &models.Cron{Id: 1, Expression: "* * * * *"}
+	c := &models.Event{Id: 1, Expression: "* * * * *"}
 	if err := s.Create(c); err != nil {
 		t.Errorf("Expected to schedule a cron %s", err)
 	}

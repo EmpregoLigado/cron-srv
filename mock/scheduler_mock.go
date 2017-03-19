@@ -20,12 +20,12 @@ func NewScheduler() *SchedulerMock {
 	}
 }
 
-func (s *SchedulerMock) Create(cron *models.Cron) (err error) {
+func (s *SchedulerMock) Create(event *models.Event) (err error) {
 	s.Created = true
 	return
 }
 
-func (s *SchedulerMock) Update(cron *models.Cron) (err error) {
+func (s *SchedulerMock) Update(event *models.Event) (err error) {
 	s.Updated = true
 	return
 }

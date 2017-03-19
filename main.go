@@ -20,8 +20,8 @@ func main() {
 		return
 	}
 	defer db.Close()
-	cron := new(models.Cron)
-	db.AutoMigrate(cron)
+	event := new(models.Event)
+	db.AutoMigrate(event)
 
 	sc := scheduler.New()
 	go func() {

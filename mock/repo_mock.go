@@ -24,8 +24,8 @@ func NewRepo() *RepoMock {
 	}
 }
 
-func (repo *RepoMock) Search(sc *models.Query, crons *[]models.Cron) (err error) {
-	*crons = append(*crons, models.Cron{Expression: "* * * * * *"})
+func (repo *RepoMock) FindEvents(events *[]models.Event, sc *models.Query) (err error) {
+	*events = append(*events, models.Event{Expression: "* * * * * *"})
 	switch true {
 	case sc.Status != "":
 		repo.ByStatus = true
@@ -37,22 +37,22 @@ func (repo *RepoMock) Search(sc *models.Query, crons *[]models.Cron) (err error)
 	return
 }
 
-func (repo *RepoMock) FindCronById(cron *models.Cron, id int) (err error) {
+func (repo *RepoMock) FindEventById(event *models.Event, id int) (err error) {
 	repo.Found = true
 	return
 }
 
-func (repo *RepoMock) CreateCron(cron *models.Cron) (err error) {
+func (repo *RepoMock) CreateEvent(event *models.Event) (err error) {
 	repo.Created = true
 	return
 }
 
-func (repo *RepoMock) UpdateCron(cron *models.Cron) (err error) {
+func (repo *RepoMock) UpdateEvent(event *models.Event) (err error) {
 	repo.Updated = true
 	return
 }
 
-func (repo *RepoMock) DeleteCron(cron *models.Cron) (err error) {
+func (repo *RepoMock) DeleteEvent(event *models.Event) (err error) {
 	repo.Deleted = true
 	return
 }

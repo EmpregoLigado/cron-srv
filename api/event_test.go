@@ -18,22 +18,22 @@ func TestEventsIndex(t *testing.T) {
 	h := NewAPIHandler(repoMock, schedulerMock)
 
 	res := httptest.NewRecorder()
-	req, err := http.NewRequest("GET", "/v1/crons", nil)
+	req, err := http.NewRequest("GET", "/v1/events", nil)
 	if err != nil {
 		t.Errorf("Expected initialize request %s", err)
 	}
 
 	r := violetear.New()
-	r.HandleFunc("/v1/crons", h.EventsIndex, "GET")
+	r.HandleFunc("/v1/events", h.EventsIndex, "GET")
 	r.ServeHTTP(res, req)
 
-	crons := []models.Cron{}
-	if err := json.NewDecoder(res.Body).Decode(&crons); err != nil {
+	events := []models.Event{}
+	if err := json.NewDecoder(res.Body).Decode(&events); err != nil {
 		t.Errorf("Expected to decode response json %s", err)
 	}
 
-	if len(crons) == 0 {
-		t.Errorf("Expected response to not be empty %s", strconv.Itoa(len(crons)))
+	if len(events) == 0 {
+		t.Errorf("Expected response to not be empty %s", strconv.Itoa(len(events)))
 	}
 
 	if res.Code != http.StatusOK {
@@ -47,13 +47,13 @@ func TestEventsIndexByStatus(t *testing.T) {
 	h := NewAPIHandler(repoMock, schedulerMock)
 
 	res := httptest.NewRecorder()
-	req, err := http.NewRequest("GET", "/v1/crons?status=active", nil)
+	req, err := http.NewRequest("GET", "/v1/events?status=active", nil)
 	if err != nil {
 		t.Errorf("Expected initialize request %s", err)
 	}
 
 	r := violetear.New()
-	r.HandleFunc("/v1/crons", h.EventsIndex, "GET")
+	r.HandleFunc("/v1/events", h.EventsIndex, "GET")
 	r.ServeHTTP(res, req)
 
 	if !repoMock.ByStatus {
@@ -71,13 +71,13 @@ func TestEventsIndexByExpression(t *testing.T) {
 	h := NewAPIHandler(repoMock, schedulerMock)
 
 	res := httptest.NewRecorder()
-	req, err := http.NewRequest("GET", "/v1/crons?expression=* * * * *", nil)
+	req, err := http.NewRequest("GET", "/v1/events?expression=* * * * *", nil)
 	if err != nil {
 		t.Errorf("Expected initialize request %s", err)
 	}
 
 	r := violetear.New()
-	r.HandleFunc("/v1/crons", h.EventsIndex, "GET")
+	r.HandleFunc("/v1/events", h.EventsIndex, "GET")
 	r.ServeHTTP(res, req)
 
 	if !repoMock.ByExpression {
@@ -89,7 +89,7 @@ func TestEventsIndexByExpression(t *testing.T) {
 	}
 }
 
-func TestCronCreate(t *testing.T) {
+func TestEventCreate(t *testing.T) {
 	schedulerMock := mock.NewScheduler()
 	repoMock := mock.NewRepo()
 	h := NewAPIHandler(repoMock, schedulerMock)
@@ -118,7 +118,7 @@ func TestCronCreate(t *testing.T) {
 	}
 }
 
-func TestCronShow(t *testing.T) {
+func TestEventShow(t *testing.T) {
 	schedulerMock := mock.NewScheduler()
 	repoMock := mock.NewRepo()
 	h := NewAPIHandler(repoMock, schedulerMock)
@@ -135,7 +135,7 @@ func TestCronShow(t *testing.T) {
 	r.ServeHTTP(res, req)
 
 	if !repoMock.Found {
-		t.Error("Expected repo findCronById to be called")
+		t.Error("Expected repo findEventById to be called")
 	}
 
 	if res.Code != http.StatusOK {

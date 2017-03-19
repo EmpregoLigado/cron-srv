@@ -21,38 +21,38 @@ func (h *APIHandler) EventsIndex(w http.ResponseWriter, r *http.Request) {
 		expression = q["expression"][0]
 	}
 
-	query := models.Query{status, expression}
-	crons := []models.Cron{}
-	if err := h.Repo.Search(&query, &crons); err != nil {
-		w.WriteHeader(http.StatusUnprocessableEntity)
+	query := models.NewQuery(status, expression)
+	events := []models.Event{}
+	if err := h.Repo.FindEvents(&events, query); err != nil {
+		w.WriteHeader(http.StatusPreconditionFailed)
 		json.NewEncoder(w).Encode(err)
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(&crons)
+	json.NewEncoder(w).Encode(&events)
 }
 
 func (h *APIHandler) EventsCreate(w http.ResponseWriter, r *http.Request) {
-	cron := new(models.Cron)
-	if err := json.NewDecoder(r.Body).Decode(cron); err != nil {
+	event := new(models.Event)
+	if err := json.NewDecoder(r.Body).Decode(event); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	if err := h.Repo.CreateCron(cron); err != nil {
+	if err := h.Repo.CreateEvent(event); err != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		json.NewEncoder(w).Encode(err)
 		return
 	}
 
-	if err := h.Scheduler.Create(cron); err != nil {
+	if err := h.Scheduler.Create(event); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(cron)
+	json.NewEncoder(w).Encode(event)
 }
 
 func (h *APIHandler) EventsShow(w http.ResponseWriter, r *http.Request) {
@@ -63,14 +63,14 @@ func (h *APIHandler) EventsShow(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cron := new(models.Cron)
-	if err := h.Repo.FindCronById(cron, id); err != nil {
+	event := new(models.Event)
+	if err := h.Repo.FindEventById(event, id); err != nil {
 		log.Print(err)
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	json.NewEncoder(w).Encode(cron)
+	json.NewEncoder(w).Encode(event)
 }
 
 func (h *APIHandler) EventsUpdate(w http.ResponseWriter, r *http.Request) {
@@ -81,37 +81,37 @@ func (h *APIHandler) EventsUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cron := new(models.Cron)
-	if err := h.Repo.FindCronById(cron, id); err != nil {
+	event := new(models.Event)
+	if err := h.Repo.FindEventById(event, id); err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	cr := new(models.Cron)
-	if err := json.NewDecoder(r.Body).Decode(cr); err != nil {
+	e := new(models.Event)
+	if err := json.NewDecoder(r.Body).Decode(e); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	cron.Status = cr.Status
-	cron.Expression = cr.Expression
-	cron.Url = cr.Url
-	cron.MaxRetries = cr.MaxRetries
-	cron.RetryTimeout = cr.RetryTimeout
+	event.Status = e.Status
+	event.Expression = e.Expression
+	event.Url = e.Url
+	event.MaxRetries = e.MaxRetries
+	event.RetryTimeout = e.RetryTimeout
 
-	if err := h.Repo.UpdateCron(cron); err != nil {
+	if err := h.Repo.UpdateEvent(event); err != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		json.NewEncoder(w).Encode(err)
 		return
 	}
 
-	if err := h.Scheduler.Update(cron); err != nil {
+	if err := h.Scheduler.Update(event); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(cron)
+	json.NewEncoder(w).Encode(event)
 }
 
 func (h *APIHandler) EventsDelete(w http.ResponseWriter, r *http.Request) {
@@ -122,18 +122,18 @@ func (h *APIHandler) EventsDelete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cron := new(models.Cron)
-	if err := h.Repo.FindCronById(cron, id); err != nil {
+	event := new(models.Event)
+	if err := h.Repo.FindEventById(event, id); err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	if err := h.Repo.DeleteCron(cron); err != nil {
+	if err := h.Repo.DeleteEvent(event); err != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
 
-	if err := h.Scheduler.Delete(cron.Id); err != nil {
+	if err := h.Scheduler.Delete(event.Id); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
