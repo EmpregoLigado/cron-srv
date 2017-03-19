@@ -1,6 +1,7 @@
 package scheduler
 
 import (
+	"errors"
 	"github.com/EmpregoLigado/cron-srv/models"
 	"github.com/EmpregoLigado/cron-srv/repo"
 	log "github.com/Sirupsen/logrus"
@@ -10,10 +11,15 @@ import (
 	"time"
 )
 
+var (
+	ErrCronNotExist = errors.New("finding a scheduled event requires a existent cron id")
+)
+
 type Scheduler interface {
 	Create(cron *models.Cron) (err error)
 	Update(cron *models.Cron) (err error)
 	Delete(id uint) (err error)
+	Find(id uint) (cron *cron.Cron, err error)
 	ScheduleAll(repo repo.Repo) (err error)
 }
 
@@ -90,6 +96,19 @@ func (s *scheduler) Create(cron *models.Cron) (err error) {
 	return
 }
 
+func (s *scheduler) Find(id uint) (cron *cron.Cron, err error) {
+	s.Lock()
+	defer s.Unlock()
+
+	cron, found := s.Kv[id]
+	if !found {
+		err = ErrCronNotExist
+		return
+	}
+
+	return
+}
+
 func (s *scheduler) Update(cron *models.Cron) (err error) {
 	if err = s.Delete(cron.Id); err != nil {
 		return
@@ -101,6 +120,12 @@ func (s *scheduler) Update(cron *models.Cron) (err error) {
 func (s scheduler) Delete(id uint) (err error) {
 	s.Lock()
 	defer s.Unlock()
+
+	_, found := s.Kv[id]
+	if !found {
+		err = ErrCronNotExist
+		return
+	}
 
 	s.Kv[id].Stop()
 	s.Kv[id] = nil
