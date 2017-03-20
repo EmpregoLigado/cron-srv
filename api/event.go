@@ -4,92 +4,78 @@ import (
 	"encoding/json"
 	"github.com/EmpregoLigado/cron-srv/models"
 	"github.com/nbari/violetear"
-	"log"
 	"net/http"
 	"strconv"
 )
 
 func (h *APIHandler) EventsIndex(w http.ResponseWriter, r *http.Request) {
-	q := r.URL.Query()
-	var status, expression string
-
-	if len(q["status"]) != 0 {
-		status = q["status"][0]
-	}
-
-	if len(q["expression"]) != 0 {
-		expression = q["expression"][0]
-	}
-
+	status := r.URL.Query().Get("status")
+	expression := r.URL.Query().Get("expression")
 	query := models.NewQuery(status, expression)
 	events := []models.Event{}
+
 	if err := h.Repo.FindEvents(&events, query); err != nil {
-		w.WriteHeader(http.StatusPreconditionFailed)
-		json.NewEncoder(w).Encode(err)
+		JSON(w, http.StatusPreconditionFailed, err)
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(&events)
+	JSON(w, http.StatusOK, &events)
 }
 
 func (h *APIHandler) EventsCreate(w http.ResponseWriter, r *http.Request) {
 	event := new(models.Event)
 	if err := json.NewDecoder(r.Body).Decode(event); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		JSON(w, http.StatusBadRequest, err)
 		return
 	}
 
 	if err := h.Repo.CreateEvent(event); err != nil {
-		w.WriteHeader(http.StatusUnprocessableEntity)
-		json.NewEncoder(w).Encode(err)
+		JSON(w, http.StatusUnprocessableEntity, err)
 		return
 	}
 
 	if err := h.Scheduler.Create(event); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		JSON(w, http.StatusInternalServerError, err)
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(event)
+	JSON(w, http.StatusCreated, event)
 }
 
 func (h *APIHandler) EventsShow(w http.ResponseWriter, r *http.Request) {
 	params := r.Context().Value(violetear.ParamsKey).(violetear.Params)
 	id, err := strconv.Atoi(params[":id"].(string))
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		JSON(w, http.StatusBadRequest, err)
 		return
 	}
 
 	event := new(models.Event)
 	if err := h.Repo.FindEventById(event, id); err != nil {
-		log.Print(err)
-		w.WriteHeader(http.StatusNotFound)
+		JSON(w, http.StatusNotFound, err)
 		return
 	}
 
-	json.NewEncoder(w).Encode(event)
+	JSON(w, http.StatusOK, event)
 }
 
 func (h *APIHandler) EventsUpdate(w http.ResponseWriter, r *http.Request) {
 	params := r.Context().Value(violetear.ParamsKey).(violetear.Params)
 	id, err := strconv.Atoi(params[":id"].(string))
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		JSON(w, http.StatusBadRequest, err)
 		return
 	}
 
 	event := new(models.Event)
 	if err := h.Repo.FindEventById(event, id); err != nil {
-		w.WriteHeader(http.StatusNotFound)
+		JSON(w, http.StatusNotFound, err)
 		return
 	}
 
 	e := new(models.Event)
 	if err := json.NewDecoder(r.Body).Decode(e); err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		JSON(w, http.StatusBadRequest, err)
 		return
 	}
 
@@ -100,43 +86,41 @@ func (h *APIHandler) EventsUpdate(w http.ResponseWriter, r *http.Request) {
 	event.Timeout = e.Timeout
 
 	if err := h.Repo.UpdateEvent(event); err != nil {
-		w.WriteHeader(http.StatusUnprocessableEntity)
-		json.NewEncoder(w).Encode(err)
+		JSON(w, http.StatusUnprocessableEntity, err)
 		return
 	}
 
 	if err := h.Scheduler.Update(event); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		JSON(w, http.StatusInternalServerError, err)
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(event)
+	JSON(w, http.StatusOK, event)
 }
 
 func (h *APIHandler) EventsDelete(w http.ResponseWriter, r *http.Request) {
 	params := r.Context().Value(violetear.ParamsKey).(violetear.Params)
 	id, err := strconv.Atoi(params[":id"].([]string)[0])
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		JSON(w, http.StatusBadRequest, err)
 		return
 	}
 
 	event := new(models.Event)
 	if err := h.Repo.FindEventById(event, id); err != nil {
-		w.WriteHeader(http.StatusNotFound)
+		JSON(w, http.StatusNotFound, err)
 		return
 	}
 
 	if err := h.Repo.DeleteEvent(event); err != nil {
-		w.WriteHeader(http.StatusUnprocessableEntity)
+		JSON(w, http.StatusUnprocessableEntity, err)
 		return
 	}
 
 	if err := h.Scheduler.Delete(event.Id); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		JSON(w, http.StatusInternalServerError, err)
 		return
 	}
 
-	w.WriteHeader(http.StatusNoContent)
+	JSON(w, http.StatusNoContent, nil)
 }
