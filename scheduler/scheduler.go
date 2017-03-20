@@ -2,7 +2,6 @@ package scheduler
 
 import (
 	"errors"
-	"github.com/EmpregoLigado/cron-srv/caller"
 	"github.com/EmpregoLigado/cron-srv/models"
 	"github.com/EmpregoLigado/cron-srv/repo"
 	"github.com/EmpregoLigado/cron-srv/runner"
@@ -15,11 +14,11 @@ var (
 )
 
 type Scheduler interface {
-	Create(cron *models.Event) (err error)
-	Update(cron *models.Event) (err error)
-	Delete(id uint) (err error)
-	Find(id uint) (cron *cron.Cron, err error)
-	ScheduleAll(repo repo.Repo) (err error)
+	Create(cron *models.Event) error
+	Update(cron *models.Event) error
+	Delete(id uint) error
+	Find(id uint) (*cron.Cron, error)
+	ScheduleAll(repo repo.Repo) error
 }
 
 type scheduler struct {
