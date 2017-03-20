@@ -13,3 +13,5 @@ import:
 - package: github.com/spf13/viper
 - package: github.com/rubyist/circuitbreaker
   version: v2.2.0
+- package: gopkg.in/h2non/gock.v1
+  version: v1.0.4

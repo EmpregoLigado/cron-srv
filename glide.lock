@@ -1,5 +1,5 @@
-hash: de966b37092583f1951f814f61ec8eb887bf365c832fd572b7332f1ce92c6116
-updated: 2017-03-19T16:07:39.306307579-03:00
+hash: bdaf457395442ca15686831c2f463e316588574477f2d3d1d2c4ec2ec2ad5534
+updated: 2017-03-20T12:55:21.238520192-03:00
 imports:
 - name: github.com/cenk/backoff
   version: 3db60c813733fce657c114634171689bbf1f8dee
@@ -70,6 +70,8 @@ imports:
   subpackages:
   - transform
   - unicode/norm
+- name: gopkg.in/h2non/gock.v1
+  version: 2897ffde93a71060ce86518f1e7317ec8433d2d6
 - name: gopkg.in/yaml.v2
   version: a5b47d31c556af34a302ce5d659e6fea44d90de0
 testImports: []
