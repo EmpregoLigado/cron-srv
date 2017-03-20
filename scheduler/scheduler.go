@@ -2,6 +2,7 @@ package scheduler
 
 import (
 	"errors"
+	"github.com/EmpregoLigado/cron-srv/caller"
 	"github.com/EmpregoLigado/cron-srv/models"
 	"github.com/EmpregoLigado/cron-srv/repo"
 	"github.com/EmpregoLigado/cron-srv/runner"
@@ -56,14 +57,14 @@ func (s *scheduler) ScheduleAll(repo repo.Repo) (err error) {
 
 func (s *scheduler) Create(event *models.Event) (err error) {
 	s.Cron.AddFunc(event.Expression, func() {
-		rc := &runner.Config{
+		c := &runner.Config{
 			Url:     event.Url,
 			Retries: event.Retries,
 			Timeout: event.Timeout,
 		}
 
 		r := runner.New()
-		r.Run() <- rc
+		r.Run() <- c
 	})
 
 	s.Lock()
