@@ -9,18 +9,36 @@ type DB struct {
 	*gorm.DB
 }
 
-func NewDB(dbname string) (*DB, error) {
-	conn, err := gorm.Open("postgres", dbname)
+type DBConfig struct {
+	Url         string
+	MaxIdleConn int
+	MaxOpenConn int
+	LogMode     bool
+}
+
+func NewDB(c DBConfig) (db *DB, err error) {
+	conn, err := gorm.Open("postgres", c.Url)
 	if err != nil {
-		return nil, err
+		return
 	}
 
-	if err := conn.DB().Ping(); err != nil {
-		return nil, err
+	if err = conn.DB().Ping(); err != nil {
+		return
 	}
 
-	conn.DB().SetMaxIdleConns(10)
-	conn.DB().SetMaxOpenConns(100)
+	if c.MaxIdleConn == 0 {
+		c.MaxIdleConn = 10
+	}
 
-	return &DB{conn}, nil
+	if c.MaxIdleConn == 0 {
+		c.MaxIdleConn = 100
+	}
+
+	conn.DB().SetMaxIdleConns(c.MaxIdleConn)
+	conn.DB().SetMaxOpenConns(c.MaxOpenConn)
+	conn.LogMode(c.LogMode)
+
+	db = &DB{conn}
+
+	return
 }

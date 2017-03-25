@@ -35,7 +35,7 @@ go build
 ```bash
 curl -X POST -H "Content-Type: application/json" \
 -d '{"url": "example.com/api/v1/stats", "expression": "0 5 * * * *", "status": "active", "max_retries": 2, "retry_timeout": 3}' \
-localhost:3000/v1/cron
+localhost:3000/v1/events
 ```
 
 - Response
@@ -52,14 +52,14 @@ localhost:3000/v1/cron
 ```
 
 ## API Documentation
-|HTTP verb|path|handle||
+|HTTP verb| path|                   handle|
 |:--|:--|:--|:--|
-|GET|/v1/healthz|HealthzIndex|retun a state of server `{"alive":true}`|
-|GET|/v1/crons|CronIndex|display a list of all crons|
-|POST|/v1/cron|CronCreate|create a new cron|
-|GET|/v1/cron/:id|CronShow|display a specific cron|
-|PUT|/v1/cron/:id|CronUpdate|update a specific cron|
-|DELETE|/v1/cron/:id|CronDelete|delete a specific cron|
+|GET        |/v1/healthz|HealthzIndex     |return a state of server `{"alive":"up"}`|
+|GET        |/v1/events|EventsIndex       |display a list of all events|
+|POST       |/v1/events|EventsCreate      |create a new event|
+|GET        |/v1/events/:id|EventsShow    |display a specific event|
+|PUT        |/v1/events/:id|EventsUpdate  |update a specific event|
+|DELETE     |/v1/events/:id|EventsDelete  |delete a specific event|
 
 ## Cron Format
 The cron expression format allowed is:
